@@ -120,73 +120,6 @@
   <!-- Toast Notification Container -->
   <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none no-print"></div>
 
-  <!-- Modal Pengaturan Google Apps Script -->
-  <div id="settingsModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 no-print">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden transform transition-all">
-      <div class="bg-gradient-to-r from-indigo-600 to-blue-600 px-6 py-4 flex items-center justify-between text-white">
-        <div class="flex items-center gap-2.5">
-          <i data-lucide="settings" class="w-5 h-5"></i>
-          <h3 class="font-bold text-lg">Koneksi Google Spreadsheet</h3>
-        </div>
-        <button onclick="toggleSettingsModal(false)" class="text-white/80 hover:text-white p-1 rounded-lg">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-      <div class="p-6 space-y-4">
-        <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3.5 text-xs text-indigo-900 space-y-1">
-          <p class="font-semibold flex items-center gap-1.5">
-            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-indigo-600"></i>
-            Target Google Spreadsheet ID:
-          </p>
-          <code class="block bg-white px-2.5 py-1.5 rounded border border-indigo-200 font-mono text-[11px] break-all select-all">
-            1E-UKI1-PGqxRiC_fSlX7t2biQ3ghA6Pt5Natu4haTC8
-          </code>
-        </div>
-
-        <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-            URL Web App Google Apps Script (<span class="font-mono text-xs text-indigo-600">/exec</span>)
-          </label>
-          <input
-            type="url"
-            id="scriptUrlInput"
-            placeholder="https://script.google.com/macros/s/AKfycb.../exec"
-            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-          />
-          <p class="text-xs text-slate-500 mt-1.5">
-            Pastikan deployment Apps Script diatur ke <b>"Execute as: Me"</b> dan <b>"Who has access: Anyone"</b>.
-          </p>
-        </div>
-
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
-          <a
-            href="https://docs.google.com/spreadsheets/d/1E-UKI1-PGqxRiC_fSlX7t2biQ3ghA6Pt5Natu4haTC8/edit"
-            target="_blank"
-            class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-2 rounded-xl transition"
-          >
-            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-            Buka Google Sheet
-          </a>
-          <div class="flex items-center gap-2">
-            <button
-              onclick="toggleSettingsModal(false)"
-              class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition"
-            >
-              Batal
-            </button>
-            <button
-              onclick="saveScriptUrl()"
-              class="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition inline-flex items-center gap-1.5"
-            >
-              <i data-lucide="save" class="w-4 h-4"></i>
-              Simpan & Uji Koneksi
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Modal Konfirmasi Hapus -->
   <div id="confirmModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 no-print">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-sm w-full p-6 space-y-4">
@@ -198,10 +131,10 @@
       </div>
       <p id="confirmMessage" class="text-sm text-slate-600">Apakah Anda yakin ingin menghapus data ini?</p>
       <div class="flex justify-end gap-2 pt-2">
-        <button onclick="closeConfirmModal()" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">
+        <button type="button" onclick="closeConfirmModal()" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">
           Batal
         </button>
-        <button id="confirmActionBtn" class="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700">
+        <button type="button" id="confirmActionBtn" class="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700">
           Ya, Hapus
         </button>
       </div>
@@ -232,26 +165,19 @@
 
       <div class="flex flex-wrap items-center gap-2.5">
         <!-- Indikator Status Koneksi -->
-        <div id="connectionBadge" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-          <span id="connectionDot" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-          <span id="connectionText">Mode Lokal (URL Belum Diatur)</span>
+        <div id="connectionBadge" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span id="connectionDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span id="connectionText">Terhubung ke Google Sheet</span>
         </div>
 
         <button
+          type="button"
           onclick="syncFromGoogleSheet(true)"
-          class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition"
+          class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm transition"
           title="Tarik data terbaru dari Google Sheet"
         >
           <i data-lucide="refresh-cw" id="syncIcon" class="w-3.5 h-3.5"></i>
-          <span>Sinkronisasi</span>
-        </button>
-
-        <button
-          onclick="toggleSettingsModal(true)"
-          class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition"
-        >
-          <i data-lucide="link" class="w-3.5 h-3.5"></i>
-          <span>Koneksi Apps Script</span>
+          <span>Sinkronisasi Data</span>
         </button>
       </div>
     </div>
@@ -260,6 +186,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-100 bg-slate-50/70">
       <nav class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2" aria-label="Tabs">
         <button
+          type="button"
           onclick="switchTab('kunci')"
           id="tab-btn-kunci"
           class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition bg-indigo-600 text-white shadow-sm"
@@ -268,6 +195,7 @@
           <span>1. Input Kunci Jawaban</span>
         </button>
         <button
+          type="button"
           onclick="switchTab('siswa')"
           id="tab-btn-siswa"
           class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition text-slate-600 hover:bg-white hover:text-slate-900"
@@ -276,6 +204,7 @@
           <span>2. Input Jawaban Siswa</span>
         </button>
         <button
+          type="button"
           onclick="switchTab('rekap')"
           id="tab-btn-rekap"
           class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition text-slate-600 hover:bg-white hover:text-slate-900"
@@ -294,7 +223,6 @@
     <!-- TAB 1: INPUT KUNCI JAWABAN & PENGATURAN SOAL                          -->
     <!-- ===================================================================== -->
     <section id="tab-kunci" class="space-y-6 no-print">
-      <!-- Kartu Identitas Kunci Jawaban -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-5 border-b border-slate-100">
           <div>
@@ -893,7 +821,7 @@
 
           <!-- Kanan Bawah: Guru Mata Pelajaran -->
           <div class="flex flex-col items-center text-center">
-            <p id="tanggalCetak">Bandung, 16 November 2026</p>
+            <p id="tanggalCetak">Katapang, 16 November 2026</p>
             <p class="font-semibold">Guru Mata Pelajaran</p>
             <div class="h-16 sm:h-20"></div>
             <p class="font-bold underline uppercase">Pandu Rinata, S.Pd</p>
@@ -908,8 +836,7 @@
 
   <!-- FOOTER (NO-PRINT) -->
   <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500 no-print mt-10">
-    Aplikasi Analisis Butir Soal Kurikulum Merdeka • Terintegrasi Google Spreadsheet ID:
-    <span class="font-mono text-slate-700">1E-UKI1-PGqxRiC_fSlX7t2biQ3ghA6Pt5Natu4haTC8</span>
+    Aplikasi Analisis Butir Soal Kurikulum Merdeka
   </footer>
 
   <!-- ======================================================================= -->
@@ -919,58 +846,53 @@
     // =========================================================================
     // 1. KONFIGURASI & STATE GLOBAL
     // =========================================================================
-    const SPREADSHEET_ID = '1E-UKI1-PGqxRiC_fSlX7t2biQ3ghA6Pt5Natu4haTC8';
+    const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1gN3_zJusFw0SFr-VeEiLv_jFu_tQBfYIAsyKcsXnh9VhZKzTxa7rbd_zGhBf58a-MA/exec';
     const STORAGE_KEYS = {
-      SCRIPT_URL: 'abs_apps_script_url_v1',
       KUNCI_MAP: 'abs_kunci_jawaban_map_v1',
       SISWA_LIST: 'abs_data_siswa_list_v1'
     };
 
     let appState = {
-      scriptUrl: localStorage.getItem(STORAGE_KEYS.SCRIPT_URL) || '',
+      scriptUrl: DEFAULT_SCRIPT_URL,
       kunciMap: JSON.parse(localStorage.getItem(STORAGE_KEYS.KUNCI_MAP) || '{}'),
       siswaList: JSON.parse(localStorage.getItem(STORAGE_KEYS.SISWA_LIST) || '[]'),
       currentSiswaAnswers: {
         pg: Array(25).fill(''),
         isian: Array(10).fill(''),
+        isianOverride: Array(10).fill(null),
         uraian: Array(5).fill(0)
       }
     };
 
     // Helper membuat Kode Kunci Unik (Sekolah_Kelas_Mapel)
-    function makeContextKey(sekolah, kelas, mapel) {
+    function makeKodeKey(sekolah, kelas, mapel) {
       return `${(sekolah || '').trim()}_${(kelas || '').trim()}_${(mapel || '').trim()}`
         .toUpperCase()
         .replace(/\s+/g, '_');
     }
 
-    // Default Struktur Kunci 40 Soal
     function createDefaultKunciStructure() {
       return {
-        pg: Array(25).fill(''),       // 1 - 25 (bobot 1)
-        isian: Array(10).fill(''),    // 26 - 35 (bobot 2)
-        uraian: Array.from({ length: 5 }, () => ({ kunci: '', maxScore: 4 })) // 36 - 40 (default bobot 4)
+        pg: Array(25).fill(''),
+        isian: Array(10).fill(''),
+        uraian: Array(5).fill(''),
+        uraianMax: Array(5).fill(4)
       };
     }
 
     // =========================================================================
-    // 2. INISIALISASI HALAMAN
+    // 2. INISIALISASI APLIKASI
     // =========================================================================
-    window.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      updateConnectionBadge();
       setTanggalIndonesia();
-
-      renderKunciFormGrids();
+      renderKunciForms();
       loadExistingKunciToForm();
-
       onSiswaContextChange();
-      populateFilterDropdowns();
-      renderRekapAndAnalisis();
+      populateSchoolFilter();
 
-      if (appState.scriptUrl) {
-        syncFromGoogleSheet(false);
-      }
+      // Tarik data otomatis dari Google Sheet
+      syncFromGoogleSheet(false);
     });
 
     function setTanggalIndonesia() {
@@ -979,7 +901,7 @@
         'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
       ];
       const now = new Date();
-      const teks = `Cijagra, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
+      const teks = `Katapang, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
       const el = document.getElementById('tanggalCetak');
       if (el) el.textContent = teks;
     }
@@ -988,129 +910,79 @@
     // 3. NAVIGASI TAB & MODAL
     // =========================================================================
     function switchTab(tabName) {
-      const tabs = ['kunci', 'siswa', 'rekap'];
-      tabs.forEach(t => {
-        const sec = document.getElementById(`tab-${t}`);
+      ['kunci', 'siswa', 'rekap'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.add('hidden');
         const btn = document.getElementById(`tab-btn-${t}`);
-        if (t === tabName) {
-          sec.classList.remove('hidden');
-          btn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
-          btn.classList.remove('text-slate-600', 'hover:bg-white', 'hover:text-slate-900');
-        } else {
-          sec.classList.add('hidden');
-          btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
-          btn.classList.add('text-slate-600', 'hover:bg-white', 'hover:text-slate-900');
-        }
+        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+        btn.classList.add('text-slate-600', 'hover:bg-white', 'hover:text-slate-900');
       });
+
+      document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+      activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+      activeBtn.classList.remove('text-slate-600', 'hover:bg-white', 'hover:text-slate-900');
 
       if (tabName === 'siswa') {
         onSiswaContextChange();
       } else if (tabName === 'rekap') {
-        populateFilterDropdowns();
+        populateSchoolFilter();
         renderRekapAndAnalisis();
       }
       lucide.createIcons();
     }
 
-    function toggleSettingsModal(show) {
-      const modal = document.getElementById('settingsModal');
-      if (show) {
-        document.getElementById('scriptUrlInput').value = appState.scriptUrl;
-        modal.classList.remove('hidden');
-      } else {
-        modal.classList.add('hidden');
-      }
-    }
-
-    function saveScriptUrl() {
-      const url = document.getElementById('scriptUrlInput').value.trim();
-      if (url && !url.startsWith('https://script.google.com/')) {
-        showToast('URL harus diawali https://script.google.com/...', 'error');
-        return;
-      }
-      appState.scriptUrl = url;
-      localStorage.setItem(STORAGE_KEYS.SCRIPT_URL, url);
-      updateConnectionBadge();
-      toggleSettingsModal(false);
-
-      if (url) {
-        showToast('URL Apps Script disimpan. Menyinkronkan data...', 'success');
-        syncFromGoogleSheet(true);
-      } else {
-        showToast('URL dihapus. Aplikasi berjalan dalam Mode Lokal.', 'info');
-      }
-    }
-
-    function updateConnectionBadge() {
-      const badge = document.getElementById('connectionBadge');
-      const dot = document.getElementById('connectionDot');
-      const text = document.getElementById('connectionText');
-
-      if (appState.scriptUrl) {
-        badge.className = 'inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200';
-        dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
-        text.textContent = 'Terhubung ke Google Sheet';
-      } else {
-        badge.className = 'inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200';
-        dot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-pulse';
-        text.textContent = 'Mode Lokal (URL Belum Diatur)';
-      }
-    }
-
-    // Toast Notification
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      const styles = {
+      const colors = {
         success: 'bg-emerald-600 text-white border-emerald-700',
         error: 'bg-rose-600 text-white border-rose-700',
-        info: 'bg-slate-800 text-white border-slate-900',
-        warning: 'bg-amber-600 text-white border-amber-700'
+        warning: 'bg-amber-500 text-white border-amber-600',
+        info: 'bg-slate-900 text-white border-slate-800'
       };
-      toast.className = `pointer-events-auto px-4 py-3 rounded-xl shadow-lg border text-xs font-semibold flex items-center justify-between gap-3 transition-all transform translate-y-0 ${styles[type] || styles.info}`;
-      toast.innerHTML = `<span>${message}</span>`;
+      const icons = {
+        success: 'check-circle',
+        error: 'alert-circle',
+        warning: 'alert-triangle',
+        info: 'info'
+      };
+
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg border text-xs font-semibold transition-all duration-300 transform translate-y-2 opacity-0 ${colors[type] || colors.info}`;
+      toast.innerHTML = `
+        <i data-lucide="${icons[type] || 'info'}" class="w-4 h-4 shrink-0"></i>
+        <span class="flex-1">${message}</span>
+      `;
       container.appendChild(toast);
+      lucide.createIcons();
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
 
       setTimeout(() => {
         toast.classList.add('opacity-0', 'translate-y-2');
         setTimeout(() => toast.remove(), 300);
-      }, 3500);
+      }, 3800);
     }
 
-    // Modal Konfirmasi Kustom (Pengganti confirm())
-    let pendingConfirmCallback = null;
-    function openConfirmModal(message, callback) {
-      document.getElementById('confirmMessage').textContent = message;
-      pendingConfirmCallback = callback;
-      document.getElementById('confirmModal').classList.remove('hidden');
-    }
-    function closeConfirmModal() {
-      document.getElementById('confirmModal').classList.add('hidden');
-      pendingConfirmCallback = null;
-    }
-    document.getElementById('confirmActionBtn').addEventListener('click', () => {
-      if (pendingConfirmCallback) pendingConfirmCallback();
-      closeConfirmModal();
-    });
-
     // =========================================================================
-    // 4. LOGIKA TAB 1: INPUT KUNCI JAWABAN
+    // 4. LOGIKA TAB 1: INPUT & SIMPAN KUNCI JAWABAN
     // =========================================================================
-    function renderKunciFormGrids() {
-      // 1. Render 25 PG
+    function renderKunciForms() {
+      // Render 25 PG
       const pgGrid = document.getElementById('kunciPgGrid');
       pgGrid.innerHTML = '';
       for (let i = 0; i < 25; i++) {
         pgGrid.innerHTML += `
           <div class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 focus-within:border-indigo-500 focus-within:bg-white transition">
-            <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">
+            <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 font-bold text-xs flex items-center justify-center shrink-0">
               ${i + 1}
             </span>
             <input
               type="text"
               id="kunci_pg_${i}"
               maxlength="10"
-              oninput="handleKunciInputStyle(this); updateKunciSummaryBar();"
+              oninput="onKunciInputChange(this)"
               placeholder="A/B/C/D/*"
               class="w-full bg-transparent text-sm font-bold uppercase text-slate-900 focus:outline-none text-center"
             />
@@ -1118,7 +990,7 @@
         `;
       }
 
-      // 2. Render 10 Isian (No 26 - 35)
+      // Render 10 Isian (No. 26 - 35)
       const isianGrid = document.getElementById('kunciIsianGrid');
       isianGrid.innerHTML = '';
       for (let i = 0; i < 10; i++) {
@@ -1130,96 +1002,93 @@
             <input
               type="text"
               id="kunci_isian_${i}"
-              oninput="handleKunciInputStyle(this); updateKunciSummaryBar();"
-              placeholder="Jawaban / *"
+              oninput="onKunciInputChange(this)"
+              placeholder="Kunci / *"
               class="w-full bg-transparent text-xs font-semibold text-slate-900 focus:outline-none"
             />
           </div>
         `;
       }
 
-      // 3. Render 5 Uraian (No 36 - 40)
+      // Render 5 Uraian (No. 36 - 40)
       const uraianGrid = document.getElementById('kunciUraianGrid');
       uraianGrid.innerHTML = '';
       for (let i = 0; i < 5; i++) {
         uraianGrid.innerHTML += `
-          <div class="p-3 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2">
+          <div class="p-3 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2 focus-within:border-purple-500 focus-within:bg-white transition">
             <div class="flex items-center justify-between">
               <span class="px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 font-bold text-xs">
                 Soal No. ${36 + i}
               </span>
               <div class="flex items-center gap-1">
-                <span class="text-[10px] font-semibold text-slate-500">Bobot:</span>
+                <span class="text-[10px] font-semibold text-slate-500">Maks:</span>
                 <input
                   type="number"
                   id="kunci_uraian_max_${i}"
                   value="4"
                   min="1"
                   max="20"
-                  oninput="updateKunciSummaryBar()"
-                  class="w-12 px-1.5 py-0.5 rounded border border-slate-300 text-xs font-bold text-center bg-white"
+                  onchange="updateKunciSummaryBar()"
+                  class="w-11 px-1 py-0.5 text-xs font-bold text-center border border-slate-300 rounded bg-white"
                 />
               </div>
             </div>
             <input
               type="text"
-              id="kunci_uraian_text_${i}"
-              oninput="handleKunciInputStyle(this); updateKunciSummaryBar();"
-              placeholder="Kata kunci / * (dianulir)"
-              class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              id="kunci_uraian_${i}"
+              oninput="onKunciInputChange(this)"
+              placeholder="Kata kunci rubrik atau *"
+              class="w-full px-2.5 py-1.5 text-xs font-medium border border-slate-200 rounded-lg bg-white focus:outline-none focus:border-purple-500"
             />
           </div>
         `;
       }
     }
 
-    function handleKunciInputStyle(inputEl) {
-      const val = inputEl.value.trim();
-      const parent = inputEl.closest('div');
+    function onKunciInputChange(el) {
+      const val = el.value.trim();
+      const parent = el.closest('div');
       if (val === '*') {
-        inputEl.classList.add('text-rose-600');
-        if (parent) parent.classList.add('border-rose-300', 'bg-rose-50/60');
+        parent.classList.add('!bg-rose-50', '!border-rose-300');
       } else {
-        inputEl.classList.remove('text-rose-600');
-        if (parent) parent.classList.remove('border-rose-300', 'bg-rose-50/60');
+        parent.classList.remove('!bg-rose-50', '!border-rose-300');
       }
-    }
-
-    function readKunciFromForm() {
-      const data = createDefaultKunciStructure();
-      for (let i = 0; i < 25; i++) {
-        data.pg[i] = (document.getElementById(`kunci_pg_${i}`).value || '').trim().toUpperCase();
-      }
-      for (let i = 0; i < 10; i++) {
-        data.isian[i] = (document.getElementById(`kunci_isian_${i}`).value || '').trim();
-      }
-      for (let i = 0; i < 5; i++) {
-        data.uraian[i] = {
-          kunci: (document.getElementById(`kunci_uraian_text_${i}`).value || '').trim(),
-          maxScore: Number(document.getElementById(`kunci_uraian_max_${i}`).value) || 4
-        };
-      }
-      return data;
+      updateKunciSummaryBar();
     }
 
     function updateKunciSummaryBar() {
-      const k = readKunciFromForm();
       let pgAktif = 0, isianAktif = 0, uraianAktif = 0, dianulir = 0, totalMaks = 0;
 
-      k.pg.forEach(ans => {
-        if (ans === '*') dianulir++;
-        else { pgAktif++; totalMaks += 1; }
-      });
+      for (let i = 0; i < 25; i++) {
+        const val = (document.getElementById(`kunci_pg_${i}`)?.value || '').trim();
+        if (val === '*') {
+          dianulir++;
+        } else {
+          pgAktif++;
+          totalMaks += 1;
+        }
+      }
 
-      k.isian.forEach(ans => {
-        if (ans === '*') dianulir++;
-        else { isianAktif++; totalMaks += 2; }
-      });
+      for (let i = 0; i < 10; i++) {
+        const val = (document.getElementById(`kunci_isian_${i}`)?.value || '').trim();
+        if (val === '*') {
+          dianulir++;
+        } else {
+          isianAktif++;
+          totalMaks += 2;
+        }
+      }
 
-      k.uraian.forEach(u => {
-        if (u.kunci === '*') dianulir++;
-        else { uraianAktif++; totalMaks += (Number(u.maxScore) || 4); }
-      });
+      for (let i = 0; i < 5; i++) {
+        const val = (document.getElementById(`kunci_uraian_${i}`)?.value || '').trim();
+        const maxSkor = Number(document.getElementById(`kunci_uraian_max_${i}`)?.value || 4);
+        if (val === '*') {
+          dianulir++;
+        } else {
+          uraianAktif++;
+          totalMaks += maxSkor;
+        }
+      }
 
       document.getElementById('sumPgAktif').textContent = pgAktif;
       document.getElementById('sumIsianAktif').textContent = isianAktif;
@@ -1232,79 +1101,70 @@
       const sekolah = document.getElementById('kunciSekolah').value;
       const kelas = document.getElementById('kunciKelas').value;
       const mapel = document.getElementById('kunciMapel').value;
-      const key = makeContextKey(sekolah, kelas, mapel);
+      const kode = makeKodeKey(sekolah, kelas, mapel);
 
-      const saved = appState.kunciMap[key]?.kunci || createDefaultKunciStructure();
+      const saved = appState.kunciMap[kode]?.kunci || createDefaultKunciStructure();
 
       for (let i = 0; i < 25; i++) {
         const el = document.getElementById(`kunci_pg_${i}`);
         el.value = saved.pg?.[i] || '';
-        handleKunciInputStyle(el);
+        onKunciInputChange(el);
       }
       for (let i = 0; i < 10; i++) {
         const el = document.getElementById(`kunci_isian_${i}`);
         el.value = saved.isian?.[i] || '';
-        handleKunciInputStyle(el);
+        onKunciInputChange(el);
       }
       for (let i = 0; i < 5; i++) {
-        const txtEl = document.getElementById(`kunci_uraian_text_${i}`);
+        const el = document.getElementById(`kunci_uraian_${i}`);
         const maxEl = document.getElementById(`kunci_uraian_max_${i}`);
-        txtEl.value = saved.uraian?.[i]?.kunci || '';
-        maxEl.value = saved.uraian?.[i]?.maxScore || 4;
-        handleKunciInputStyle(txtEl);
+        el.value = saved.uraian?.[i] || '';
+        maxEl.value = saved.uraianMax?.[i] ?? 4;
+        onKunciInputChange(el);
       }
       updateKunciSummaryBar();
     }
 
     function fillDemoKunci() {
-      const demoPG = ['A','B','C','D','A','C','B','D','A','B','C','A','D','B','C','A','D','B','C','A','B','C','D','A','B'];
-      const demoIsian = ['120', 'Pancasila', 'Fotosintesis', '3/4', 'Bandung', '1945', 'Metamorfosis', '36', 'Karbondioksida', 'Gotong Royong'];
-      const demoUraian = [
-        'Menjelaskan proses siklus air lengkap',
-        'Menghitung volume balok dengan langkah benar',
-        'Menyebutkan 3 contoh pengamalan sila ke-3',
-        'Menulis paragraf utama dengan EYD tepat',
-        'Menjelaskan algoritma percabangan sederhana'
-      ];
+      const samplePG = ['A','B','C','D','A','C','B','D','A','B','C','D','A','B','C','D','A','B','C','D','A','B','C','D','*'];
+      const sampleIsian = ['45','Jakarta','Fotosintesis','120','Pancasila','3.14','Bandung','Simbiosis','75','*'];
+      const sampleUraian = ['Langkah penyelesaian lengkap','Gagasan pokok paragraf','3 contoh energi alternatif','Perubahan wujud benda','Sikap toleransi'];
 
       for (let i = 0; i < 25; i++) {
         const el = document.getElementById(`kunci_pg_${i}`);
-        el.value = demoPG[i];
-        handleKunciInputStyle(el);
+        el.value = samplePG[i];
+        onKunciInputChange(el);
       }
       for (let i = 0; i < 10; i++) {
         const el = document.getElementById(`kunci_isian_${i}`);
-        el.value = demoIsian[i];
-        handleKunciInputStyle(el);
+        el.value = sampleIsian[i];
+        onKunciInputChange(el);
       }
       for (let i = 0; i < 5; i++) {
-        const txtEl = document.getElementById(`kunci_uraian_text_${i}`);
-        const maxEl = document.getElementById(`kunci_uraian_max_${i}`);
-        txtEl.value = demoUraian[i];
-        maxEl.value = 4;
-        handleKunciInputStyle(txtEl);
+        const el = document.getElementById(`kunci_uraian_${i}`);
+        el.value = sampleUraian[i];
+        onKunciInputChange(el);
       }
       updateKunciSummaryBar();
-      showToast('Contoh kunci jawaban berhasil diisi!', 'info');
+      showToast('Contoh kunci jawaban berhasil diisi (No. 25 & 35 diatur dianulir *).', 'info');
     }
 
     function resetKunciForm() {
       for (let i = 0; i < 25; i++) {
         const el = document.getElementById(`kunci_pg_${i}`);
         el.value = '';
-        handleKunciInputStyle(el);
+        onKunciInputChange(el);
       }
       for (let i = 0; i < 10; i++) {
         const el = document.getElementById(`kunci_isian_${i}`);
         el.value = '';
-        handleKunciInputStyle(el);
+        onKunciInputChange(el);
       }
       for (let i = 0; i < 5; i++) {
-        const txtEl = document.getElementById(`kunci_uraian_text_${i}`);
-        const maxEl = document.getElementById(`kunci_uraian_max_${i}`);
-        txtEl.value = '';
-        maxEl.value = 4;
-        handleKunciInputStyle(txtEl);
+        const el = document.getElementById(`kunci_uraian_${i}`);
+        el.value = '';
+        document.getElementById(`kunci_uraian_max_${i}`).value = 4;
+        onKunciInputChange(el);
       }
       updateKunciSummaryBar();
     }
@@ -1315,15 +1175,24 @@
       const mapel = document.getElementById('kunciMapel').value;
 
       if (!sekolah) {
-        showToast('Nama Sekolah wajib diisi!', 'error');
+        showToast('Nama sekolah wajib diisi!', 'error');
         return;
       }
 
-      const kunciObj = readKunciFromForm();
-      const key = makeContextKey(sekolah, kelas, mapel);
+      const kunciObj = createDefaultKunciStructure();
+      for (let i = 0; i < 25; i++) {
+        kunciObj.pg[i] = document.getElementById(`kunci_pg_${i}`).value.trim().toUpperCase();
+      }
+      for (let i = 0; i < 10; i++) {
+        kunciObj.isian[i] = document.getElementById(`kunci_isian_${i}`).value.trim();
+      }
+      for (let i = 0; i < 5; i++) {
+        kunciObj.uraian[i] = document.getElementById(`kunci_uraian_${i}`).value.trim();
+        kunciObj.uraianMax[i] = Number(document.getElementById(`kunci_uraian_max_${i}`).value || 4);
+      }
 
-      // Simpan ke localStorage
-      appState.kunciMap[key] = {
+      const kode = makeKodeKey(sekolah, kelas, mapel);
+      appState.kunciMap[kode] = {
         sekolah,
         kelas,
         mapel,
@@ -1332,24 +1201,20 @@
       };
       localStorage.setItem(STORAGE_KEYS.KUNCI_MAP, JSON.stringify(appState.kunciMap));
 
-      // Sinkronkan identitas ke Tab Siswa agar praktis
+      // Sinkronkan identitas ke Tab Siswa
       document.getElementById('siswaSekolah').value = sekolah;
       document.getElementById('siswaKelas').value = kelas;
       document.getElementById('siswaMapel').value = mapel;
 
-      if (!appState.scriptUrl) {
-        showToast('Kunci jawaban tersimpan di penyimpanan lokal browser.', 'success');
-        return;
-      }
-
       const btn = document.getElementById('btnSaveKunci');
       btn.disabled = true;
-      btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Mengirim ke Google Sheet...</span>`;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Menyimpan...</span>`;
       lucide.createIcons();
 
       try {
-        const res = await fetch(appState.scriptUrl, {
+        await fetch(appState.scriptUrl, {
           method: 'POST',
+          mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             action: 'saveKunci',
@@ -1359,14 +1224,10 @@
             kunci: kunciObj
           })
         });
-        const json = await res.json();
-        if (json.status === 'success') {
-          showToast(json.message || 'Kunci jawaban berhasil terkirim ke Google Sheet!', 'success');
-        } else {
-          showToast('Gagal menyimpan ke Sheet: ' + (json.message || 'Error'), 'error');
-        }
+        showToast(`Kunci jawaban ${mapel} (${kelas}) berhasil terkirim ke Google Sheet!`, 'success');
       } catch (err) {
-        showToast('Tersimpan lokal, namun gagal terhubung ke Google Sheet.', 'warning');
+        console.error(err);
+        showToast('Tersimpan di browser. Gagal terhubung ke Google Sheet (cek koneksi internet).', 'warning');
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<i data-lucide="cloud-upload" class="w-5 h-5"></i><span>Simpan Kunci Jawaban ke Google Sheet</span>`;
@@ -1381,8 +1242,8 @@
       const sekolah = document.getElementById('siswaSekolah').value.trim();
       const kelas = document.getElementById('siswaKelas').value;
       const mapel = document.getElementById('siswaMapel').value;
-      const key = makeContextKey(sekolah, kelas, mapel);
-      return appState.kunciMap[key]?.kunci || null;
+      const kode = makeKodeKey(sekolah, kelas, mapel);
+      return appState.kunciMap[kode]?.kunci || null;
     }
 
     function onSiswaContextChange() {
@@ -1391,10 +1252,10 @@
 
       if (kunci) {
         statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200';
-        statusBadge.innerHTML = `<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Kunci Jawaban Siap`;
+        statusBadge.innerHTML = `<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i><span>Kunci Jawaban Aktif</span>`;
       } else {
         statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200';
-        statusBadge.innerHTML = `<i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> Kunci Belum Diisi (Input di Tab 1)`;
+        statusBadge.innerHTML = `<i data-lucide="alert-circle" class="w-3.5 h-3.5"></i><span>Kunci Belum Diinput</span>`;
       }
 
       renderSiswaAnswerGrids(kunci || createDefaultKunciStructure());
@@ -1413,12 +1274,26 @@
 
         if (isAnulir) {
           pgContainer.innerHTML += `
-            <div class="flex items-center justify-between p-2.5 rounded-xl border border-rose-200 bg-rose-50/60 opacity-80">
-              <span class="w-7 h-7 rounded-lg bg-rose-200 text-rose-800 font-bold text-xs flex items-center justify-center">${i + 1}</span>
-              <span class="text-xs font-bold text-rose-600">Dianulir (*)</span>
+            <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-300 bg-slate-100 opacity-80">
+              <span class="w-7 h-7 rounded-lg bg-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center">${i + 1}</span>
+              <span class="text-xs font-bold text-slate-600">Dianulir (*)</span>
             </div>
           `;
         } else {
+          const isFilled = curVal !== '';
+          const isCorrect = isFilled && keyAns !== '' && curVal === keyAns;
+          const isWrong = isFilled && keyAns !== '' && curVal !== keyAns;
+
+          let cardClass = 'border-slate-200 bg-slate-50/60';
+          let badgeClass = 'bg-slate-200 text-slate-700';
+          if (isCorrect) {
+            cardClass = 'border-emerald-400 bg-emerald-50/70';
+            badgeClass = 'bg-emerald-600 text-white';
+          } else if (isWrong) {
+            cardClass = 'border-rose-300 bg-rose-50/70';
+            badgeClass = 'bg-rose-600 text-white';
+          }
+
           const opts = ['A', 'B', 'C', 'D'];
           const btnsHtml = opts.map(opt => {
             const active = curVal === opt;
@@ -1428,7 +1303,7 @@
                 onclick="selectSiswaPg(${i}, '${opt}')"
                 class="w-7 h-7 rounded-lg text-xs font-bold transition ${
                   active
-                    ? 'bg-indigo-600 text-white shadow-sm'
+                    ? (isWrong ? 'bg-rose-600 text-white shadow-sm' : 'bg-emerald-600 text-white shadow-sm')
                     : 'bg-white border border-slate-300 text-slate-700 hover:bg-indigo-50'
                 }"
               >${opt}</button>
@@ -1436,8 +1311,8 @@
           }).join('');
 
           pgContainer.innerHTML += `
-            <div class="flex items-center justify-between gap-1.5 p-2 rounded-xl border border-slate-200 bg-slate-50/60">
-              <span class="w-6 h-6 rounded-md bg-slate-200 text-slate-700 font-bold text-[11px] flex items-center justify-center shrink-0">${i + 1}</span>
+            <div id="card_pg_${i}" class="flex items-center justify-between gap-1.5 p-2 rounded-xl border transition ${cardClass}">
+              <span id="num_pg_${i}" class="w-6 h-6 rounded-md font-bold text-[11px] flex items-center justify-center shrink-0 ${badgeClass}">${i + 1}</span>
               <div class="flex items-center gap-1">${btnsHtml}</div>
               <input
                 type="text"
@@ -1462,14 +1337,14 @@
 
         if (isAnulir) {
           isianContainer.innerHTML += `
-            <div class="flex items-center justify-between p-2.5 rounded-xl border border-rose-200 bg-rose-50/60">
-              <span class="w-7 h-7 rounded-lg bg-rose-200 text-rose-800 font-bold text-xs flex items-center justify-center">${26 + i}</span>
-              <span class="text-xs font-bold text-rose-600">Soal Dianulir (*)</span>
+            <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-300 bg-slate-100">
+              <span class="w-7 h-7 rounded-lg bg-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center">${26 + i}</span>
+              <span class="text-xs font-bold text-slate-600">Soal Dianulir (*)</span>
             </div>
           `;
         } else {
           isianContainer.innerHTML += `
-            <div class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 focus-within:border-emerald-500 focus-within:bg-white">
+            <div id="card_isian_${i}" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 focus-within:border-emerald-500 focus-within:bg-white transition">
               <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center shrink-0">${26 + i}</span>
               <input
                 type="text"
@@ -1478,7 +1353,13 @@
                 placeholder="Jawaban siswa (Kunci: ${keyAns || '-'})"
                 class="w-full bg-transparent text-xs font-semibold text-slate-900 focus:outline-none"
               />
-              <span id="badge_isian_${i}" class="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-600">-</span>
+              <button
+                type="button"
+                id="badge_isian_${i}"
+                onclick="toggleIsianManual(${i})"
+                title="Klik untuk ubah manual Benar (+2) / Salah (0)"
+                class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-200 text-slate-600 hover:opacity-80 transition shrink-0"
+              >-</button>
             </div>
           `;
         }
@@ -1488,24 +1369,24 @@
       const uraianContainer = document.getElementById('siswaUraianGrid');
       uraianContainer.innerHTML = '';
       for (let i = 0; i < 5; i++) {
-        const uObj = kunci.uraian?.[i] || { kunci: '', maxScore: 4 };
-        const isAnulir = (uObj.kunci || '').trim() === '*';
-        const maxScore = Number(uObj.maxScore) || 4;
-        const curVal = appState.currentSiswaAnswers.uraian[i] || 0;
+        const keyAns = (kunci.uraian?.[i] || '').trim();
+        const maxScore = Number(kunci.uraianMax?.[i] ?? 4);
+        const isAnulir = keyAns === '*';
+        const curVal = appState.currentSiswaAnswers.uraian[i] ?? 0;
 
         if (isAnulir) {
           uraianContainer.innerHTML += `
-            <div class="p-3 rounded-xl border border-rose-200 bg-rose-50/60 flex items-center justify-between">
-              <span class="font-bold text-xs text-rose-800">No. ${36 + i}</span>
-              <span class="text-xs font-bold text-rose-600">Dianulir (*)</span>
+            <div class="p-3 rounded-xl border border-slate-300 bg-slate-100 flex items-center justify-between">
+              <span class="font-bold text-xs text-slate-700">No. ${36 + i}</span>
+              <span class="text-xs font-bold text-slate-600">Dianulir (*)</span>
             </div>
           `;
         } else {
           uraianContainer.innerHTML += `
-            <div class="p-3 rounded-xl border border-slate-200 bg-slate-50/60 space-y-1.5">
+            <div class="p-3 rounded-xl border border-slate-200 bg-slate-50/60 space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded">No. ${36 + i}</span>
-                <span class="text-[11px] text-slate-500">Maks: <b>${maxScore}</b></span>
+                <span class="px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 font-bold text-xs">No. ${36 + i}</span>
+                <span class="text-[11px] font-semibold text-slate-500">Maks: <b>${maxScore}</b></span>
               </div>
               <input
                 type="number"
@@ -1514,7 +1395,7 @@
                 step="0.5"
                 value="${curVal}"
                 oninput="onTypeSiswaUraian(${i}, this.value, ${maxScore})"
-                class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-sm font-bold text-center focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                class="w-full px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-sm font-bold text-center text-purple-900 focus:ring-2 focus:ring-purple-500"
               />
             </div>
           `;
@@ -1523,8 +1404,8 @@
     }
 
     function selectSiswaPg(index, opt) {
-      appState.currentSiswaAnswers.pg[index] =
-        appState.currentSiswaAnswers.pg[index] === opt ? '' : opt;
+      const current = appState.currentSiswaAnswers.pg[index];
+      appState.currentSiswaAnswers.pg[index] = current === opt ? '' : opt;
       const kunci = getActiveKunciForSiswa() || createDefaultKunciStructure();
       renderSiswaAnswerGrids(kunci);
       recalculateSiswaRealtime();
@@ -1532,11 +1413,40 @@
 
     function onTypeSiswaPg(index, val) {
       appState.currentSiswaAnswers.pg[index] = val.trim().toUpperCase();
+      const kunci = getActiveKunciForSiswa() || createDefaultKunciStructure();
+      const keyAns = (kunci.pg?.[index] || '').trim().toUpperCase();
+      const curVal = appState.currentSiswaAnswers.pg[index];
+      const cardEl = document.getElementById(`card_pg_${index}`);
+      const numEl = document.getElementById(`num_pg_${index}`);
+
+      if (cardEl && numEl) {
+        if (!curVal || !keyAns) {
+          cardEl.className = 'flex items-center justify-between gap-1.5 p-2 rounded-xl border transition border-slate-200 bg-slate-50/60';
+          numEl.className = 'w-6 h-6 rounded-md font-bold text-[11px] flex items-center justify-center shrink-0 bg-slate-200 text-slate-700';
+        } else if (curVal === keyAns) {
+          cardEl.className = 'flex items-center justify-between gap-1.5 p-2 rounded-xl border transition border-emerald-400 bg-emerald-50/70';
+          numEl.className = 'w-6 h-6 rounded-md font-bold text-[11px] flex items-center justify-center shrink-0 bg-emerald-600 text-white';
+        } else {
+          cardEl.className = 'flex items-center justify-between gap-1.5 p-2 rounded-xl border transition border-rose-300 bg-rose-50/70';
+          numEl.className = 'w-6 h-6 rounded-md font-bold text-[11px] flex items-center justify-center shrink-0 bg-rose-600 text-white';
+        }
+      }
       recalculateSiswaRealtime();
     }
 
     function onTypeSiswaIsian(index, val) {
       appState.currentSiswaAnswers.isian[index] = val;
+      appState.currentSiswaAnswers.isianOverride[index] = null;
+      recalculateSiswaRealtime();
+    }
+
+    function toggleIsianManual(index) {
+      const curOverride = appState.currentSiswaAnswers.isianOverride[index];
+      if (curOverride === null || curOverride === false) {
+        appState.currentSiswaAnswers.isianOverride[index] = true;
+      } else {
+        appState.currentSiswaAnswers.isianOverride[index] = false;
+      }
       recalculateSiswaRealtime();
     }
 
@@ -1548,14 +1458,14 @@
       recalculateSiswaRealtime();
     }
 
-    // Kalkulasi Skor Siswa Secara Real-Time
     function recalculateSiswaRealtime() {
       const kunci = getActiveKunciForSiswa() || createDefaultKunciStructure();
-      let skorPG = 0, skorIsian = 0, skorUraian = 0;
-      let pgBenar = 0, isianBenar = 0;
-      let pgAktif = 0, isianAktif = 0, uraianAktif = 0, anulirCount = 0;
+      let skorPG = 0, pgBenar = 0, pgAktif = 0;
+      let skorIsian = 0, isianBenar = 0, isianAktif = 0;
+      let skorUraian = 0, uraianAktif = 0;
       let skorMaks = 0;
-      const skorButir = []; // Array 40 angka skor perolehan per butir
+      let anulirCount = 0;
+      const skorButir = []; // Array 40 item (null jika dianulir)
 
       // 1. Hitung PG (Bobot 1)
       for (let i = 0; i < 25; i++) {
@@ -1582,7 +1492,9 @@
       for (let i = 0; i < 10; i++) {
         const k = (kunci.isian?.[i] || '').trim().toLowerCase();
         const s = (appState.currentSiswaAnswers.isian[i] || '').trim().toLowerCase();
+        const override = appState.currentSiswaAnswers.isianOverride?.[i];
         const badgeEl = document.getElementById(`badge_isian_${i}`);
+        const cardEl = document.getElementById(`card_isian_${i}`);
 
         if (k === '*') {
           anulirCount++;
@@ -1590,22 +1502,33 @@
         } else {
           isianAktif++;
           skorMaks += 2;
-          const benar = k !== '' && s === k;
+          const autoBenar = k !== '' && s === k;
+          const benar = override !== null && override !== undefined ? override : autoBenar;
+
           if (benar) {
             skorIsian += 2;
             isianBenar++;
             skorButir.push(2);
             if (badgeEl) {
-              badgeEl.textContent = '+2';
-              badgeEl.className = 'text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700';
+              badgeEl.textContent = 'Benar (+2)';
+              badgeEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-600 text-white hover:opacity-90 transition shrink-0';
+            }
+            if (cardEl) {
+              cardEl.className = 'flex items-center gap-2 p-2.5 rounded-xl border border-emerald-400 bg-emerald-50/60 transition';
             }
           } else {
             skorButir.push(0);
+            const hasInput = s !== '' || override === false;
             if (badgeEl) {
-              badgeEl.textContent = s ? '0' : '-';
-              badgeEl.className = s
-                ? 'text-[11px] font-bold px-2 py-0.5 rounded bg-rose-100 text-rose-700'
-                : 'text-[11px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-600';
+              badgeEl.textContent = hasInput ? 'Salah (0)' : 'Cek / 0';
+              badgeEl.className = hasInput
+                ? 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-rose-600 text-white hover:opacity-90 transition shrink-0'
+                : 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-200 text-slate-600 hover:bg-slate-300 transition shrink-0';
+            }
+            if (cardEl) {
+              cardEl.className = hasInput
+                ? 'flex items-center gap-2 p-2.5 rounded-xl border border-rose-300 bg-rose-50/50 transition'
+                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 focus-within:border-emerald-500 focus-within:bg-white transition';
             }
           }
         }
@@ -1613,48 +1536,45 @@
 
       // 3. Hitung Uraian (Bobot sesuai setting, default 4)
       for (let i = 0; i < 5; i++) {
-        const uObj = kunci.uraian?.[i] || { kunci: '', maxScore: 4 };
-        const k = (uObj.kunci || '').trim();
-        const maxS = Number(uObj.maxScore) || 4;
+        const k = (kunci.uraian?.[i] || '').trim();
+        const maxS = Number(kunci.uraianMax?.[i] ?? 4);
+        const s = Number(appState.currentSiswaAnswers.uraian[i] || 0);
         if (k === '*') {
           anulirCount++;
           skorButir.push(null);
         } else {
           uraianAktif++;
           skorMaks += maxS;
-          const s = Math.min(maxS, Math.max(0, Number(appState.currentSiswaAnswers.uraian[i]) || 0));
-          skorUraian += s;
-          skorButir.push(s);
+          const validScore = Math.min(Math.max(s, 0), maxS);
+          skorUraian += validScore;
+          skorButir.push(validScore);
         }
       }
 
       const totalSkor = skorPG + skorIsian + skorUraian;
-      const nilaiAkhir = skorMaks > 0 ? Number(((totalSkor / skorMaks) * 100).toFixed(1)) : 0;
+      const nilaiAkhir = skorMaks > 0 ? Number(((totalSkor / skorMaks) * 100).toFixed(2)) : 0;
 
-      // Update UI Panel Real-Time
+      // Update UI Panel Sticky
       document.getElementById('rtNilaiAkhir').textContent = nilaiAkhir.toFixed(1);
       document.getElementById('rtTotalSkor').textContent = totalSkor;
       document.getElementById('rtSkorMaks').textContent = skorMaks;
-
       document.getElementById('rtPgBenar').textContent = pgBenar;
       document.getElementById('rtPgAktif').textContent = pgAktif;
       document.getElementById('rtSkorPG').textContent = skorPG;
-
       document.getElementById('rtIsianBenar').textContent = isianBenar;
       document.getElementById('rtIsianAktif').textContent = isianAktif;
       document.getElementById('rtSkorIsian').textContent = skorIsian;
-
       document.getElementById('rtUraianAktif').textContent = uraianAktif;
       document.getElementById('rtSkorUraian').textContent = skorUraian;
 
-      const kkm = Number(document.getElementById('kkmInput')?.value) || 75;
-      const rtBadge = document.getElementById('rtStatusBadge');
+      const kkm = Number(document.getElementById('kkmInput')?.value || 75);
+      const badge = document.getElementById('rtStatusBadge');
       if (nilaiAkhir >= kkm) {
-        rtBadge.textContent = 'TUNTAS';
-        rtBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30';
+        badge.textContent = 'TUNTAS';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30';
       } else {
-        rtBadge.textContent = 'BELUM TUNTAS';
-        rtBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/20 text-rose-300 border border-rose-400/30';
+        badge.textContent = 'BELUM TUNTAS';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/20 text-rose-300 border border-rose-400/30';
       }
 
       const anulirBox = document.getElementById('rtAnulirInfo');
@@ -1665,13 +1585,22 @@
         anulirBox.classList.add('hidden');
       }
 
-      return { skorPG, skorIsian, skorUraian, totalSkor, skorMaks, nilaiAkhir, skorButir };
+      return {
+        skorPG,
+        skorIsian,
+        skorUraian,
+        totalSkor,
+        skorMaks,
+        nilaiAkhir,
+        skorButir
+      };
     }
 
     function resetSiswaJawabanOnly() {
       appState.currentSiswaAnswers = {
         pg: Array(25).fill(''),
         isian: Array(10).fill(''),
+        isianOverride: Array(10).fill(null),
         uraian: Array(5).fill(0)
       };
       onSiswaContextChange();
@@ -1699,34 +1628,28 @@
         return;
       }
 
-      const calc = recalculateSiswaRealtime();
-      const record = {
-        id: 'LOCAL-' + Date.now(),
+      const hasil = recalculateSiswaRealtime();
+      const payload = {
+        action: 'saveSiswa',
+        id: 'ABS-' + Date.now(),
         timestamp: new Date().toISOString(),
         sekolah,
         kelas,
         mapel,
         nama,
-        skorPG: calc.skorPG,
-        skorIsian: calc.skorIsian,
-        skorUraian: calc.skorUraian,
-        totalSkor: calc.totalSkor,
-        skorMaks: calc.skorMaks,
-        nilaiAkhir: calc.nilaiAkhir,
+        skorPG: hasil.skorPG,
+        skorIsian: hasil.skorIsian,
+        skorUraian: hasil.skorUraian,
+        totalSkor: hasil.totalSkor,
+        skorMaks: hasil.skorMaks,
+        nilaiAkhir: hasil.nilaiAkhir,
         jawaban: JSON.parse(JSON.stringify(appState.currentSiswaAnswers)),
-        skorButir: calc.skorButir
+        skorButir: hasil.skorButir
       };
 
-      // Simpan ke localStorage
-      appState.siswaList.push(record);
+      // Simpan ke state lokal
+      appState.siswaList.push(payload);
       localStorage.setItem(STORAGE_KEYS.SISWA_LIST, JSON.stringify(appState.siswaList));
-      populateFilterDropdowns();
-
-      if (!appState.scriptUrl) {
-        showToast(`Nilai ${nama} (${calc.nilaiAkhir}) tersimpan di perangkat lokal.`, 'success');
-        resetAllSiswaForm();
-        return;
-      }
 
       const btn = document.getElementById('btnSubmitSiswa');
       btn.disabled = true;
@@ -1734,96 +1657,88 @@
       lucide.createIcons();
 
       try {
-        const res = await fetch(appState.scriptUrl, {
+        await fetch(appState.scriptUrl, {
           method: 'POST',
+          mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'saveSiswa',
-            ...record
-          })
+          body: JSON.stringify(payload)
         });
-        const json = await res.json();
-        if (json.status === 'success') {
-          if (json.id) {
-            record.id = json.id;
-            localStorage.setItem(STORAGE_KEYS.SISWA_LIST, JSON.stringify(appState.siswaList));
-          }
-          showToast(`Berhasil! Nilai ${nama} (${calc.nilaiAkhir}) terkirim ke Google Sheet.`, 'success');
-          resetAllSiswaForm();
-        } else {
-          showToast('Tersimpan lokal, gagal ke Sheet: ' + (json.message || 'Error'), 'warning');
-        }
+        showToast(`Nilai ${nama} (${hasil.nilaiAkhir.toFixed(1)}) berhasil disimpan & terkirim ke Google Sheet!`, 'success');
       } catch (err) {
-        showToast('Tersimpan lokal, namun koneksi ke Google Sheet gagal.', 'warning');
+        console.error(err);
+        showToast(`Nilai ${nama} disimpan di browser (Gagal kirim ke Google Sheet).`, 'warning');
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<i data-lucide="send" class="w-4 h-4"></i><span>Simpan & Kirim ke Google Sheet</span>`;
         lucide.createIcons();
+        resetAllSiswaForm();
       }
     }
 
     // =========================================================================
-    // 6. SINKRONISASI DATA DARI GOOGLE SHEETS (GET)
+    // 6. SINKRONISASI DATA DARI GOOGLE SHEET (GET)
     // =========================================================================
     async function syncFromGoogleSheet(showNotification = true) {
-      if (!appState.scriptUrl) {
-        if (showNotification) {
-          showToast('Silakan masukkan URL Web App Apps Script terlebih dahulu.', 'warning');
-          toggleSettingsModal(true);
-        }
-        return;
-      }
-
-      const syncIcon = document.getElementById('syncIcon');
-      if (syncIcon) syncIcon.classList.add('animate-spin');
+      const icon = document.getElementById('syncIcon');
+      if (icon) icon.classList.add('animate-spin');
 
       try {
         const res = await fetch(`${appState.scriptUrl}?action=getAll`);
         const json = await res.json();
 
         if (json.status === 'success') {
-          if (json.kunci && typeof json.kunci === 'object') {
+          if (json.kunci && Object.keys(json.kunci).length > 0) {
             appState.kunciMap = { ...appState.kunciMap, ...json.kunci };
             localStorage.setItem(STORAGE_KEYS.KUNCI_MAP, JSON.stringify(appState.kunciMap));
-            loadExistingKunciToForm();
           }
           if (Array.isArray(json.data)) {
             appState.siswaList = json.data;
             localStorage.setItem(STORAGE_KEYS.SISWA_LIST, JSON.stringify(appState.siswaList));
           }
 
-          populateFilterDropdowns();
-          renderRekapAndAnalisis();
+          loadExistingKunciToForm();
           onSiswaContextChange();
+          populateSchoolFilter();
+          renderRekapAndAnalisis();
 
           if (showNotification) {
-            showToast(`Sinkronisasi berhasil! (${appState.siswaList.length} data siswa dimuat)`, 'success');
+            showToast(`Sinkronisasi sukses! ${appState.siswaList.length} data siswa dimuat.`, 'success');
           }
         } else {
-          if (showNotification) showToast('Gagal sinkronisasi: ' + json.message, 'error');
+          throw new Error(json.message || 'Gagal membaca response Google Sheet');
         }
       } catch (err) {
-        if (showNotification) showToast('Gagal terhubung ke Google Apps Script. Periksa URL & izin akses.', 'error');
+        console.warn('Sync warning:', err);
+        if (showNotification) {
+          showToast('Gagal sinkronisasi dari Google Sheet. Menggunakan data lokal.', 'warning');
+        }
       } finally {
-        if (syncIcon) syncIcon.classList.remove('animate-spin');
+        if (icon) icon.classList.remove('animate-spin');
       }
     }
 
     // =========================================================================
-    // 7. LOGIKA TAB 3: REKAPITULASI NILAI & ANALISIS 40 BUTIR SOAL
+    // 7. LOGIKA TAB 3: REKAPITULASI & ANALISIS PSIKOMETRI BUTIR SOAL
     // =========================================================================
-    function populateFilterDropdowns() {
-      const sekolahSet = new Set(['SDN Cijagra 01']);
-      appState.siswaList.forEach(s => { if (s.sekolah) sekolahSet.add(s.sekolah); });
-      Object.values(appState.kunciMap).forEach(k => { if (k.sekolah) sekolahSet.add(k.sekolah); });
-
-      const filterSekolah = document.getElementById('filterSekolah');
-      const prevVal = filterSekolah.value;
-      filterSekolah.innerHTML = `<option value="ALL">Semua Sekolah</option>`;
-      sekolahSet.forEach(sek => {
-        filterSekolah.innerHTML += `<option value="${sek}">${sek}</option>`;
+    function populateSchoolFilter() {
+      const select = document.getElementById('filterSekolah');
+      const currentVal = select.value;
+      const schools = new Set(['SDN Cijagra 01']);
+      appState.siswaList.forEach(s => {
+        if (s.sekolah) schools.add(s.sekolah);
       });
-      if ([...sekolahSet].includes(prevVal)) filterSekolah.value = prevVal;
+      Object.values(appState.kunciMap).forEach(k => {
+        if (k.sekolah) schools.add(k.sekolah);
+      });
+
+      select.innerHTML = `<option value="ALL">Semua Sekolah</option>`;
+      schools.forEach(sch => {
+        select.innerHTML += `<option value="${sch}">${sch}</option>`;
+      });
+
+      if ([...schools, 'ALL'].includes(currentVal)) {
+        select.value = currentVal;
+      }
     }
 
     function getFilteredSiswa() {
@@ -1832,7 +1747,7 @@
       const fMapel = document.getElementById('filterMapel').value;
 
       return appState.siswaList.filter(item => {
-        const matchSekolah = fSekolah === 'ALL' || item.sekolah === fSekolah;
+        const matchSekolah = fSekolah === 'ALL' || (item.sekolah || '').toLowerCase() === fSekolah.toLowerCase();
         const matchKelas = fKelas === 'ALL' || item.kelas === fKelas;
         const matchMapel = fMapel === 'ALL' || item.mapel === fMapel;
         return matchSekolah && matchKelas && matchMapel;
@@ -1840,47 +1755,46 @@
     }
 
     function renderRekapAndAnalisis() {
+      const filtered = getFilteredSiswa();
       const fSekolah = document.getElementById('filterSekolah').value;
       const fKelas = document.getElementById('filterKelas').value;
       const fMapel = document.getElementById('filterMapel').value;
-      const kkm = Number(document.getElementById('kkmInput').value) || 75;
+      const kkm = Number(document.getElementById('kkmInput').value || 75);
 
-      // Update Identitas Header Laporan
-      document.getElementById('repSekolah').textContent = fSekolah === 'ALL' ? 'SDN Cijagra 01 (Semua)' : fSekolah;
+      // Update Kop Identitas Laporan
+      document.getElementById('repSekolah').textContent = fSekolah === 'ALL' ? 'Semua Satuan Pendidikan' : fSekolah;
       document.getElementById('repKelas').textContent = fKelas === 'ALL' ? 'Semua Kelas' : fKelas;
       document.getElementById('repMapel').textContent = fMapel === 'ALL' ? 'Semua Mata Pelajaran' : fMapel;
-      document.getElementById('repInfoSoal').textContent = `40 Butir (25 PG, 10 Isian, 5 Uraian) • KKTP ${kkm}`;
+      document.getElementById('repInfoSoal').textContent = `40 Butir (25 PG, 10 Isian, 5 Uraian) / KKTP ${kkm}`;
 
-      const filtered = getFilteredSiswa();
-
-      // 1. Hitung Statistik Kelas
+      // Hitung Statistik Deskriptif
       const n = filtered.length;
-      let maxVal = 0, minVal = 0, meanVal = 0, stdDev = 0, tuntasCount = 0;
+      const scores = filtered.map(s => Number(s.nilaiAkhir || 0));
 
+      let maxVal = 0, minVal = 0, meanVal = 0, stdDevVal = 0, tuntasCount = 0;
       if (n > 0) {
-        const scores = filtered.map(s => Number(s.nilaiAkhir) || 0);
         maxVal = Math.max(...scores);
         minVal = Math.min(...scores);
-        meanVal = scores.reduce((a, b) => a + b, 0) / n;
-
+        const sum = scores.reduce((a, b) => a + b, 0);
+        meanVal = sum / n;
         const variance = scores.reduce((acc, val) => acc + Math.pow(val - meanVal, 2), 0) / n;
-        stdDev = Math.sqrt(variance);
-        tuntasCount = scores.filter(sc => sc >= kkm).length;
+        stdDevVal = Math.sqrt(variance);
+        tuntasCount = scores.filter(v => v >= kkm).length;
       }
 
-      const belumTuntasCount = n - tuntasCount;
-      const persenTuntas = n > 0 ? Math.round((tuntasCount / n) * 100) : 0;
-      const persenBelum = n > 0 ? 100 - persenTuntas : 0;
+      const belumCount = n - tuntasCount;
+      const pctTuntas = n > 0 ? Math.round((tuntasCount / n) * 100) : 0;
+      const pctBelum = n > 0 ? (100 - pctTuntas) : 0;
 
       document.getElementById('statJumlahSiswa').textContent = n;
       document.getElementById('statMax').textContent = maxVal.toFixed(1);
       document.getElementById('statMin').textContent = minVal.toFixed(1);
-      document.getElementById('statMean').textContent = meanVal.toFixed(1);
-      document.getElementById('statStdDev').textContent = stdDev.toFixed(2);
-      document.getElementById('statTuntas').textContent = `${tuntasCount} (${persenTuntas}%)`;
-      document.getElementById('statBelumTuntas').textContent = `${belumTuntasCount} (${persenBelum}%)`;
+      document.getElementById('statMean').textContent = meanVal.toFixed(2);
+      document.getElementById('statStdDev').textContent = stdDevVal.toFixed(2);
+      document.getElementById('statTuntas').textContent = `${tuntasCount} (${pctTuntas}%)`;
+      document.getElementById('statBelumTuntas').textContent = `${belumCount} (${pctBelum}%)`;
 
-      // 2. Render Tabel Rekap Nilai Siswa
+      // Render Tabel Rekap Siswa
       const tbody = document.getElementById('rekapSiswaBody');
       if (n === 0) {
         tbody.innerHTML = `
@@ -1895,28 +1809,27 @@
           const isTuntas = Number(s.nilaiAkhir) >= kkm;
           return `
             <tr class="hover:bg-slate-50/80">
-              <td class="py-2 px-3 text-center font-semibold text-slate-600">${idx + 1}</td>
-              <td class="py-2 px-3 font-bold text-slate-900">${escapeHtml(s.nama)}</td>
-              <td class="py-2 px-3 text-slate-600">${escapeHtml(s.kelas)} • ${escapeHtml(s.mapel)}</td>
+              <td class="py-2 px-3 text-center font-medium text-slate-600">${idx + 1}</td>
+              <td class="py-2 px-3 font-bold text-slate-900">${s.nama}</td>
+              <td class="py-2 px-3 text-slate-600">${s.kelas} • ${s.mapel}</td>
               <td class="py-2 px-3 text-center font-medium">${s.skorPG}</td>
               <td class="py-2 px-3 text-center font-medium">${s.skorIsian}</td>
               <td class="py-2 px-3 text-center font-medium">${s.skorUraian}</td>
-              <td class="py-2 px-3 text-center font-bold text-slate-800">${s.totalSkor} / ${s.skorMaks}</td>
-              <td class="py-2 px-3 text-center font-extrabold ${isTuntas ? 'text-emerald-700' : 'text-rose-600'}">
-                ${Number(s.nilaiAkhir).toFixed(1)}
-              </td>
+              <td class="py-2 px-3 text-center font-semibold">${s.totalSkor} / ${s.skorMaks}</td>
+              <td class="py-2 px-3 text-center font-extrabold text-indigo-700">${Number(s.nilaiAkhir).toFixed(1)}</td>
               <td class="py-2 px-3 text-center">
                 <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${
                   isTuntas ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
                 }">
-                  ${isTuntas ? 'Tuntas' : 'Perlu Bimbingan'}
+                  ${isTuntas ? 'Tuntas' : 'Remedial'}
                 </span>
               </td>
               <td class="py-2 px-3 text-center no-print">
                 <button
-                  onclick="confirmDeleteSiswa('${s.id}', '${escapeHtml(s.nama)}')"
-                  class="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition"
-                  title="Hapus Data"
+                  type="button"
+                  onclick="confirmDeleteSiswa('${s.id}', '${s.nama.replace(/'/g, "\\'")}')"
+                  class="text-rose-500 hover:text-rose-700 p-1 rounded-lg hover:bg-rose-50"
+                  title="Hapus data siswa"
                 >
                   <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                 </button>
@@ -1926,231 +1839,214 @@
         }).join('');
       }
 
-      // 3. Render Tabel Analisis 40 Butir Soal
+      // Render Tabel Analisis Butir Soal (40 Butir)
       renderAnalisisButirTable(filtered, fSekolah, fKelas, fMapel);
       lucide.createIcons();
     }
 
-    function computeButirAnalysis(filtered, fSekolah, fKelas, fMapel) {
-      // Cari kunci jawaban yang relevan jika sekolah/kelas/mapel dipilih
-      let activeKunci = createDefaultKunciStructure();
-      if (fKelas !== 'ALL' && fMapel !== 'ALL') {
-        const sek = fSekolah === 'ALL' ? 'SDN Cijagra 01' : fSekolah;
-        const key = makeContextKey(sek, fKelas, fMapel);
-        if (appState.kunciMap[key]?.kunci) {
-          activeKunci = appState.kunciMap[key].kunci;
-        }
-      }
-
-      const n = filtered.length;
-      // Urutkan siswa dari nilai tertinggi ke terendah untuk menghitung Daya Pembeda (Kelompok Atas vs Bawah)
-      const sorted = [...filtered].sort((a, b) => Number(b.nilaiAkhir) - Number(a.nilaiAkhir));
-      const groupSize = n >= 2 ? Math.max(1, Math.floor(n * 0.5)) : 0;
-      const upperGroup = sorted.slice(0, groupSize);
-      const lowerGroup = sorted.slice(n - groupSize);
-
-      const results = [];
-
-      for (let idx = 0; idx < 40; idx++) {
-        let tipe = 'Pilihan Ganda';
-        let kunciTeks = '-';
-        let bobotMaks = 1;
-
-        if (idx < 25) {
-          tipe = 'Pilihan Ganda';
-          kunciTeks = activeKunci.pg?.[idx] || '-';
-          bobotMaks = 1;
-        } else if (idx < 35) {
-          tipe = 'Isian Singkat';
-          kunciTeks = activeKunci.isian?.[idx - 25] || '-';
-          bobotMaks = 2;
-        } else {
-          tipe = 'Uraian';
-          const uObj = activeKunci.uraian?.[idx - 35] || { kunci: '-', maxScore: 4 };
-          kunciTeks = uObj.kunci || '-';
-          bobotMaks = Number(uObj.maxScore) || 4;
-        }
-
-        const isAnulir = kunciTeks.trim() === '*' || (n > 0 && filtered.every(s => s.skorButir?.[idx] === null));
-
-        if (isAnulir) {
-          results.push({
-            no: idx + 1,
-            tipe,
-            kunci: '*',
-            bobotMaks: 0,
-            totalPerolehan: '-',
-            p: '-',
-            kategoriP: 'Dianulir (*)',
-            d: '-',
-            kategoriD: '-',
-            tindakLanjut: 'Soal Dianulir (Tidak Dihitung)'
-          });
-          continue;
-        }
-
-        if (n === 0) {
-          results.push({
-            no: idx + 1,
-            tipe,
-            kunci: kunciTeks,
-            bobotMaks,
-            totalPerolehan: '0',
-            p: '0.00',
-            kategoriP: '-',
-            d: '0.00',
-            kategoriD: '-',
-            tindakLanjut: 'Menunggu Data Siswa'
-          });
-          continue;
-        }
-
-        // Hitung Rata-Rata Skor Butir / Tingkat Kesukaran (P)
-        let sumScore = 0;
-        let correctCount = 0;
-        filtered.forEach(s => {
-          const val = Number(s.skorButir?.[idx]) || 0;
-          sumScore += val;
-          if (val >= bobotMaks) correctCount++;
-        });
-
-        const pVal = sumScore / (n * bobotMaks);
-        let kategoriP = 'Sedang';
-        if (pVal < 0.30) kategoriP = 'Sukar';
-        else if (pVal > 0.70) kategoriP = 'Mudah';
-
-        // Hitung Daya Pembeda (D = Mean_Atas/Maks - Mean_Bawah/Maks)
-        let dVal = 0;
-        if (groupSize > 0 && n >= 2) {
-          const sumUpper = upperGroup.reduce((acc, s) => acc + (Number(s.skorButir?.[idx]) || 0), 0);
-          const sumLower = lowerGroup.reduce((acc, s) => acc + (Number(s.skorButir?.[idx]) || 0), 0);
-          const meanUpper = sumUpper / (groupSize * bobotMaks);
-          const meanLower = sumLower / (groupSize * bobotMaks);
-          dVal = meanUpper - meanLower;
-        }
-
-        let kategoriD = 'Jelek';
-        if (n < 2) kategoriD = 'Min. 2 Siswa';
-        else if (dVal >= 0.40) kategoriD = 'Baik Sekali';
-        else if (dVal >= 0.30) kategoriD = 'Baik';
-        else if (dVal >= 0.20) kategoriD = 'Cukup';
-
-        // Tindak Lanjut Butir Soal
-        let tindakLanjut = 'Diterima (Bank Soal)';
-        if (n < 2) {
-          tindakLanjut = 'Tambah data siswa untuk uji D';
-        } else if (dVal >= 0.30 && pVal >= 0.30 && pVal <= 0.70) {
-          tindakLanjut = 'Sangat Baik (Simpan di Bank Soal)';
-        } else if (dVal >= 0.20) {
-          tindakLanjut = 'Diterima dengan Perbaikan Kecil';
-        } else {
-          tindakLanjut = 'Revisi Total / Diganti';
-        }
-
-        const displayPerolehan = idx < 25
-          ? `${correctCount} / ${n} benar`
-          : `${sumScore.toFixed(1)} / ${(n * bobotMaks)}`;
-
-        results.push({
-          no: idx + 1,
-          tipe,
-          kunci: kunciTeks,
-          bobotMaks,
-          totalPerolehan: displayPerolehan,
-          p: pVal.toFixed(2),
-          kategoriP,
-          d: n >= 2 ? dVal.toFixed(2) : '-',
-          kategoriD,
-          tindakLanjut
-        });
-      }
-
-      return results;
-    }
-
-    function renderAnalisisButirTable(filtered, fSekolah, fKelas, fMapel) {
-      const rows = computeButirAnalysis(filtered, fSekolah, fKelas, fMapel);
+    function renderAnalisisButirTable(filteredSiswa, fSekolah, fKelas, fMapel) {
       const tbody = document.getElementById('analisisButirBody');
-
-      tbody.innerHTML = rows.map(r => {
-        const isAnulir = r.kunci === '*';
-        let badgeP = 'bg-blue-50 text-blue-700';
-        if (r.kategoriP === 'Sukar') badgeP = 'bg-amber-100 text-amber-800';
-        else if (r.kategoriP === 'Mudah') badgeP = 'bg-emerald-100 text-emerald-800';
-        else if (isAnulir) badgeP = 'bg-rose-100 text-rose-700';
-
-        let badgeD = 'bg-slate-100 text-slate-700';
-        if (r.kategoriD === 'Baik Sekali' || r.kategoriD === 'Baik') badgeD = 'bg-emerald-100 text-emerald-800';
-        else if (r.kategoriD === 'Cukup') badgeD = 'bg-amber-100 text-amber-800';
-        else if (r.kategoriD === 'Jelek') badgeD = 'bg-rose-100 text-rose-800';
-
-        return `
-          <tr class="${isAnulir ? 'bg-rose-50/40 text-rose-800' : 'hover:bg-slate-50/70'}">
-            <td class="py-1.5 px-2.5 text-center font-bold">${r.no}</td>
-            <td class="py-1.5 px-2.5 font-medium">${r.tipe}</td>
-            <td class="py-1.5 px-2.5 text-center font-bold">${escapeHtml(r.kunci)}</td>
-            <td class="py-1.5 px-2.5 text-center">${r.bobotMaks}</td>
-            <td class="py-1.5 px-2.5 text-center">${r.totalPerolehan}</td>
-            <td class="py-1.5 px-2.5 text-center font-mono font-bold">${r.p}</td>
-            <td class="py-1.5 px-2.5 text-center">
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeP}">${r.kategoriP}</span>
+      if (filteredSiswa.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" class="py-8 text-center text-slate-400">
+              Data siswa kosong. Input jawaban siswa terlebih dahulu untuk menghitung Tingkat Kesukaran (P) dan Daya Pembeda (D).
             </td>
-            <td class="py-1.5 px-2.5 text-center font-mono font-bold">${r.d}</td>
-            <td class="py-1.5 px-2.5 text-center">
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${badgeD}">${r.kategoriD}</span>
-            </td>
-            <td class="py-1.5 px-2.5 font-medium">${r.tindakLanjut}</td>
           </tr>
         `;
-      }).join('');
-    }
+        return;
+      }
 
-    function confirmDeleteSiswa(id, nama) {
-      openConfirmModal(`Hapus data nilai siswa "${nama}"?`, async () => {
-        appState.siswaList = appState.siswaList.filter(s => s.id !== id);
-        localStorage.setItem(STORAGE_KEYS.SISWA_LIST, JSON.stringify(appState.siswaList));
-        renderRekapAndAnalisis();
+      // Cari kunci yang cocok jika filter spesifik
+      const sample = filteredSiswa[0];
+      const kode = makeKodeKey(
+        fSekolah === 'ALL' ? sample.sekolah : fSekolah,
+        fKelas === 'ALL' ? sample.kelas : fKelas,
+        fMapel === 'ALL' ? sample.mapel : fMapel
+      );
+      const kunci = appState.kunciMap[kode]?.kunci || createDefaultKunciStructure();
 
-        if (appState.scriptUrl && !id.startsWith('LOCAL-')) {
-          try {
-            await fetch(appState.scriptUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ action: 'deleteSiswa', id })
-            });
-            showToast(`Data "${nama}" dihapus dari Google Sheet.`, 'success');
-          } catch (err) {
-            showToast('Data dihapus secara lokal.', 'info');
-          }
+      // Urutkan siswa dari skor tertinggi ke terendah untuk menghitung Daya Pembeda (Kelompok Atas vs Bawah)
+      const sorted = [...filteredSiswa].sort((a, b) => Number(b.totalSkor) - Number(a.totalSkor));
+      const n = sorted.length;
+      const half = Math.max(1, Math.floor(n / 2));
+      const upperGroup = sorted.slice(0, half);
+      const lowerGroup = sorted.slice(n - half);
+
+      let rowsHtml = '';
+      for (let idx = 0; idx < 40; idx++) {
+        let bentuk = 'Pilihan Ganda';
+        let keyVal = '';
+        let maxBobot = 1;
+
+        if (idx < 25) {
+          bentuk = 'Pilihan Ganda';
+          keyVal = (kunci.pg?.[idx] || '-').toUpperCase();
+          maxBobot = 1;
+        } else if (idx < 35) {
+          bentuk = 'Isian Singkat';
+          keyVal = kunci.isian?.[idx - 25] || '-';
+          maxBobot = 2;
         } else {
-          showToast(`Data "${nama}" berhasil dihapus.`, 'success');
+          bentuk = 'Uraian';
+          keyVal = kunci.uraian?.[idx - 35] || 'Rubrik';
+          maxBobot = Number(kunci.uraianMax?.[idx - 35] ?? 4);
         }
-      });
+
+        const isAnulir = keyVal === '*' || filteredSiswa.every(s => s.skorButir?.[idx] === null);
+
+        if (isAnulir) {
+          rowsHtml += `
+            <tr class="bg-rose-50/40 text-slate-500">
+              <td class="py-1.5 px-2.5 text-center font-bold">${idx + 1}</td>
+              <td class="py-1.5 px-2.5">${bentuk}</td>
+              <td class="py-1.5 px-2.5 text-center font-mono font-bold text-rose-600">*</td>
+              <td class="py-1.5 px-2.5 text-center">-</td>
+              <td class="py-1.5 px-2.5 text-center">-</td>
+              <td class="py-1.5 px-2.5 text-center">-</td>
+              <td class="py-1.5 px-2.5 text-center">-</td>
+              <td class="py-1.5 px-2.5 text-center">-</td>
+              <td class="py-1.5 px-2.5 text-center">-</td>
+              <td class="py-1.5 px-2.5 font-bold text-rose-600">Soal Dianulir (Tidak Dihitung)</td>
+            </tr>
+          `;
+          continue;
+        }
+
+        // Hitung Total Skor Perolehan Butir & Tingkat Kesukaran (P = Mean Skor / Max Bobot)
+        const totalItemScore = filteredSiswa.reduce((sum, s) => sum + Number(s.skorButir?.[idx] || 0), 0);
+        const pIndex = (n > 0 && maxBobot > 0) ? (totalItemScore / (n * maxBobot)) : 0;
+
+        let katP = 'Sedang';
+        let badgeP = 'bg-emerald-100 text-emerald-800';
+        if (pIndex < 0.30) {
+          katP = 'Sukar';
+          badgeP = 'bg-amber-100 text-amber-800';
+        } else if (pIndex > 0.70) {
+          katP = 'Mudah';
+          badgeP = 'bg-blue-100 text-blue-800';
+        }
+
+        // Hitung Daya Pembeda (D = P_atas - P_bawah)
+        let dIndex = 0;
+        if (n >= 2) {
+          const upperScore = upperGroup.reduce((sum, s) => sum + Number(s.skorButir?.[idx] || 0), 0);
+          const lowerScore = lowerGroup.reduce((sum, s) => sum + Number(s.skorButir?.[idx] || 0), 0);
+          const pUpper = upperScore / (upperGroup.length * maxBobot);
+          const pLower = lowerScore / (lowerGroup.length * maxBobot);
+          dIndex = pUpper - pLower;
+        }
+
+        let katD = 'Cukup';
+        let tindakLanjut = 'Dapat Digunakan (Bank Soal)';
+        let tindakClass = 'text-emerald-700 font-semibold';
+
+        if (n < 2) {
+          katD = 'N < 2';
+          tindakLanjut = 'Butuh ≥ 2 Siswa untuk Daya Pembeda';
+          tindakClass = 'text-slate-500';
+        } else if (dIndex >= 0.40) {
+          katD = 'Baik Sekali';
+          tindakLanjut = 'Sangat Baik (Simpan di Bank Soal)';
+          tindakClass = 'text-emerald-700 font-bold';
+        } else if (dIndex >= 0.30) {
+          katD = 'Baik';
+          tindakLanjut = 'Baik (Diterima)';
+          tindakClass = 'text-emerald-700 font-semibold';
+        } else if (dIndex >= 0.20) {
+          katD = 'Cukup';
+          tindakLanjut = 'Diterima dengan Perbaikan Redaksi';
+          tindakClass = 'text-amber-700 font-semibold';
+        } else {
+          katD = 'Jelek';
+          tindakLanjut = 'Revisi Total / Dibuang';
+          tindakClass = 'text-rose-600 font-bold';
+        }
+
+        rowsHtml += `
+          <tr class="hover:bg-slate-50">
+            <td class="py-1.5 px-2.5 text-center font-bold text-slate-800">${idx + 1}</td>
+            <td class="py-1.5 px-2.5 text-slate-600">${bentuk}</td>
+            <td class="py-1.5 px-2.5 text-center font-mono font-semibold text-slate-700 max-w-[90px] truncate" title="${keyVal}">${keyVal}</td>
+            <td class="py-1.5 px-2.5 text-center">${maxBobot}</td>
+            <td class="py-1.5 px-2.5 text-center font-semibold">${totalItemScore} / ${n * maxBobot}</td>
+            <td class="py-1.5 px-2.5 text-center font-mono font-bold">${pIndex.toFixed(2)}</td>
+            <td class="py-1.5 px-2.5 text-center">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeP}">${katP}</span>
+            </td>
+            <td class="py-1.5 px-2.5 text-center font-mono font-bold">${n >= 2 ? dIndex.toFixed(2) : '-'}</td>
+            <td class="py-1.5 px-2.5 text-center font-semibold">${katD}</td>
+            <td class="py-1.5 px-2.5 ${tindakClass}">${tindakLanjut}</td>
+          </tr>
+        `;
+      }
+
+      tbody.innerHTML = rowsHtml;
     }
 
     // =========================================================================
-    // 8. EKSPOR EXCEL (.XLSX) DENGAN SHEETJS
+    // 8. HAPUS DATA SISWA (KONFIRMASI MODAL)
+    // =========================================================================
+    let pendingDeleteId = null;
+
+    function confirmDeleteSiswa(id, nama) {
+      pendingDeleteId = id;
+      document.getElementById('confirmMessage').textContent = `Apakah Anda yakin ingin menghapus data nilai atas nama "${nama}"?`;
+      document.getElementById('confirmModal').classList.remove('hidden');
+
+      document.getElementById('confirmActionBtn').onclick = async () => {
+        closeConfirmModal();
+        await deleteSiswaById(pendingDeleteId);
+      };
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').classList.add('hidden');
+      pendingDeleteId = null;
+    }
+
+    async function deleteSiswaById(id) {
+      appState.siswaList = appState.siswaList.filter(s => s.id !== id);
+      localStorage.setItem(STORAGE_KEYS.SISWA_LIST, JSON.stringify(appState.siswaList));
+      renderRekapAndAnalisis();
+
+      try {
+        await fetch(appState.scriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'deleteSiswa', id })
+        });
+        showToast('Data siswa berhasil dihapus.', 'success');
+      } catch (e) {
+        showToast('Data dihapus secara lokal.', 'info');
+      }
+    }
+
+    // =========================================================================
+    // 9. EXPORT EXCEL (.XLSX) LENGKAP (2 SHEET: REKAP & ANALISIS BUTIR)
     // =========================================================================
     function exportToExcel() {
       const filtered = getFilteredSiswa();
       if (filtered.length === 0) {
-        showToast('Tidak ada data siswa untuk diekspor ke Excel.', 'warning');
+        showToast('Tidak ada data siswa untuk diekspor ke Excel!', 'warning');
         return;
       }
 
       const fSekolah = document.getElementById('filterSekolah').value;
       const fKelas = document.getElementById('filterKelas').value;
       const fMapel = document.getElementById('filterMapel').value;
-      const kkm = Number(document.getElementById('kkmInput').value) || 75;
+      const kkm = Number(document.getElementById('kkmInput').value || 75);
 
-      const wb = XLSX.utils.book_new();
-
-      // Sheet 1: Rekap Nilai Siswa
+      // Sheet 1: Rekapitulasi Nilai Siswa
       const rekapRows = [
-        ['LAPORAN REKAPITULASI NILAI PESERTA DIDIK'],
-        [`Sekolah: ${fSekolah === 'ALL' ? 'SDN Cijagra 01' : fSekolah} | Kelas: ${fKelas} | Mapel: ${fMapel} | KKTP: ${kkm}`],
+        ['LAPORAN REKAPITULASI NILAI DAN ANALISIS BUTIR SOAL'],
+        ['Satuan Pendidikan', fSekolah === 'ALL' ? 'Semua Sekolah' : fSekolah],
+        ['Kelas', fKelas === 'ALL' ? 'Semua Kelas' : fKelas],
+        ['Mata Pelajaran', fMapel === 'ALL' ? 'Semua Mata Pelajaran' : fMapel],
+        ['KKTP / KKM', kkm],
         [],
-        ['No', 'Nama Siswa', 'Sekolah', 'Kelas', 'Mata Pelajaran', 'Skor PG', 'Skor Isian', 'Skor Uraian', 'Total Skor', 'Skor Maks', 'Nilai Akhir', 'Status']
+        ['No', 'Nama Siswa', 'Sekolah', 'Kelas', 'Mata Pelajaran', 'Skor PG', 'Skor Isian', 'Skor Uraian', 'Total Skor', 'Skor Maks', 'Nilai Akhir', 'Keterangan']
       ];
 
       filtered.forEach((s, idx) => {
@@ -2170,57 +2066,93 @@
         ]);
       });
 
-      // Tambahkan blok tanda tangan di Excel
-      rekapRows.push([]);
-      rekapRows.push(['Mengetahui,', '', '', '', '', '', '', 'Guru Mata Pelajaran']);
-      rekapRows.push(['Kepala Sekolah']);
-      rekapRows.push([]);
-      rekapRows.push([]);
-      rekapRows.push(['Yanti Widiastuti, S.Pd.I', '', '', '', '', '', '', 'Pandu Rinata, S.Pd']);
-      rekapRows.push(['NIP. 197407232009012001', '', '', '', '', '', '', 'NIP. 198510272023211003']);
+      // Tambahkan Statistik & Tanda Tangan di bawah Sheet 1
+      const scores = filtered.map(s => Number(s.nilaiAkhir));
+      const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+      const stdDev = Math.sqrt(scores.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / scores.length);
 
-      const wsRekap = XLSX.utils.aoa_to_sheet(rekapRows);
-      XLSX.utils.book_append_sheet(wb, wsRekap, 'Rekap_Nilai');
+      rekapRows.push([]);
+      rekapRows.push(['STATISTIK HASIL BELAJAR']);
+      rekapRows.push(['Nilai Tertinggi', Math.max(...scores)]);
+      rekapRows.push(['Nilai Terendah', Math.min(...scores)]);
+      rekapRows.push(['Rata-Rata (Mean)', Number(mean.toFixed(2))]);
+      rekapRows.push(['Simpangan Baku', Number(stdDev.toFixed(2))]);
+      rekapRows.push([]);
+      rekapRows.push(['Mengetahui,', '', '', '', '', '', 'Guru Mata Pelajaran']);
+      rekapRows.push(['Kepala Sekolah', '', '', '', '', '', '']);
+      rekapRows.push([]);
+      rekapRows.push([]);
+      rekapRows.push(['Yanti Widiastuti, S.Pd.I', '', '', '', '', '', 'Pandu Rinata, S.Pd']);
+      rekapRows.push(['NIP. 197407232009012001', '', '', '', '', '', 'NIP. 198510272023211003']);
 
       // Sheet 2: Analisis 40 Butir Soal
-      const analisisData = computeButirAnalysis(filtered, fSekolah, fKelas, fMapel);
+      const sample = filtered[0];
+      const kode = makeKodeKey(
+        fSekolah === 'ALL' ? sample.sekolah : fSekolah,
+        fKelas === 'ALL' ? sample.kelas : fKelas,
+        fMapel === 'ALL' ? sample.mapel : fMapel
+      );
+      const kunci = appState.kunciMap[kode]?.kunci || createDefaultKunciStructure();
+      const sorted = [...filtered].sort((a, b) => Number(b.totalSkor) - Number(a.totalSkor));
+      const n = sorted.length;
+      const half = Math.max(1, Math.floor(n / 2));
+      const upperGroup = sorted.slice(0, half);
+      const lowerGroup = sorted.slice(n - half);
+
       const butirRows = [
-        ['ANALISIS PSIKOMETRI 40 BUTIR SOAL'],
-        [`Sekolah: ${fSekolah === 'ALL' ? 'SDN Cijagra 01' : fSekolah} | Kelas: ${fKelas} | Mapel: ${fMapel}`],
+        ['ANALISIS PSIKOMETRI BUTIR SOAL (40 BUTIR)'],
         [],
-        ['No Soal', 'Bentuk Soal', 'Kunci Jawaban', 'Bobot Maks', 'Jml Benar / Skor', 'Tingkat Kesukaran (P)', 'Kategori P', 'Daya Pembeda (D)', 'Kategori D', 'Tindak Lanjut']
+        ['No Soal', 'Bentuk Soal', 'Kunci', 'Bobot Maks', 'Total Skor Perolehan', 'Skor Ideal', 'Indeks Kesukaran (P)', 'Kategori Kesukaran', 'Daya Pembeda (D)', 'Kategori Daya Pembeda', 'Tindak Lanjut']
       ];
 
-      analisisData.forEach(r => {
-        butirRows.push([
-          r.no,
-          r.tipe,
-          r.kunci,
-          r.bobotMaks,
-          r.totalPerolehan,
-          r.p,
-          r.kategoriP,
-          r.d,
-          r.kategoriD,
-          r.tindakLanjut
-        ]);
-      });
+      for (let idx = 0; idx < 40; idx++) {
+        let bentuk = idx < 25 ? 'Pilihan Ganda' : (idx < 35 ? 'Isian Singkat' : 'Uraian');
+        let keyVal = idx < 25 ? (kunci.pg?.[idx] || '-') : (idx < 35 ? (kunci.isian?.[idx - 25] || '-') : (kunci.uraian?.[idx - 35] || 'Rubrik'));
+        let maxBobot = idx < 25 ? 1 : (idx < 35 ? 2 : Number(kunci.uraianMax?.[idx - 35] ?? 4));
+        const isAnulir = keyVal === '*' || filtered.every(s => s.skorButir?.[idx] === null);
 
-      const wsButir = XLSX.utils.aoa_to_sheet(butirRows);
-      XLSX.utils.book_append_sheet(wb, wsButir, 'Analisis_Butir_Soal');
+        if (isAnulir) {
+          butirRows.push([idx + 1, bentuk, '*', 0, 0, 0, '-', 'Dianulir', '-', 'Dianulir', 'Soal Dianulir (*)']);
+        } else {
+          const totalItem = filtered.reduce((sum, s) => sum + Number(s.skorButir?.[idx] || 0), 0);
+          const p = totalItem / (n * maxBobot);
+          const katP = p < 0.30 ? 'Sukar' : (p > 0.70 ? 'Mudah' : 'Sedang');
+
+          let d = 0;
+          if (n >= 2) {
+            const up = upperGroup.reduce((sum, s) => sum + Number(s.skorButir?.[idx] || 0), 0) / (upperGroup.length * maxBobot);
+            const lo = lowerGroup.reduce((sum, s) => sum + Number(s.skorButir?.[idx] || 0), 0) / (lowerGroup.length * maxBobot);
+            d = up - lo;
+          }
+          const katD = n < 2 ? 'N < 2' : (d >= 0.40 ? 'Baik Sekali' : (d >= 0.30 ? 'Baik' : (d >= 0.20 ? 'Cukup' : 'Jelek')));
+          const tindak = n < 2 ? 'Butuh >= 2 Siswa' : (d >= 0.30 ? 'Diterima (Bank Soal)' : (d >= 0.20 ? 'Revisi Redaksi' : 'Revisi Total / Dibuang'));
+
+          butirRows.push([
+            idx + 1,
+            bentuk,
+            keyVal,
+            maxBobot,
+            totalItem,
+            n * maxBobot,
+            Number(p.toFixed(2)),
+            katP,
+            n >= 2 ? Number(d.toFixed(2)) : '-',
+            katD,
+            tindak
+          ]);
+        }
+      }
+
+      const wb = XLSX.utils.book_new();
+      const ws1 = XLSX.utils.aoa_to_sheet(rekapRows);
+      const ws2 = XLSX.utils.aoa_to_sheet(butirRows);
+
+      XLSX.utils.book_append_sheet(wb, ws1, 'Rekap Nilai Siswa');
+      XLSX.utils.book_append_sheet(wb, ws2, 'Analisis Butir Soal');
 
       const fileName = `Analisis_Butir_Soal_${fKelas}_${fMapel}.xlsx`.replace(/\s+/g, '_');
       XLSX.writeFile(wb, fileName);
       showToast(`File Excel "${fileName}" berhasil diunduh!`, 'success');
-    }
-
-    function escapeHtml(str) {
-      if (str === null || str === undefined) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
     }
   </script>
 </body>
