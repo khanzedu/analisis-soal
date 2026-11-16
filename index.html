@@ -658,9 +658,10 @@
 
         <!-- KOP LAPORAN RESMI -->
         <div class="border-b-2 border-slate-900 pb-4 text-center">
-          <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900">
+          <h2 id="kopJudulUtama" class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900">
             LAPORAN REKAPITULASI NILAI DAN ANALISIS BUTIR SOAL
           </h2>
+          <p id="kopSubJudulFilter" class="text-xs sm:text-sm font-bold uppercase text-slate-800 mt-1 hidden"></p>
           <p class="text-xs sm:text-sm font-semibold text-slate-700 mt-0.5">
             KURIKULUM MERDEKA • TAHUN PELAJARAN 2025/2026
           </p>
@@ -1762,26 +1763,42 @@
       const kkm = Number(document.getElementById('kkmInput').value || 75);
 
       // Update Kop Identitas Laporan
-      document.getElementById('repSekolah').textContent = fSekolah === 'ALL' ? 'Semua Satuan Pendidikan' : fSekolah;
-      document.getElementById('repKelas').textContent = fKelas === 'ALL' ? 'Semua Kelas' : fKelas;
-      document.getElementById('repMapel').textContent = fMapel === 'ALL' ? 'Semua Mata Pelajaran' : fMapel;
+      const labelSekolah = fSekolah === 'ALL' ? 'Semua Satuan Pendidikan' : fSekolah;
+      const labelKelas = fKelas === 'ALL' ? 'Semua Kelas' : fKelas;
+      const labelMapel = fMapel === 'ALL' ? 'Semua Mata Pelajaran' : fMapel;
+
+      document.getElementById('repSekolah').textContent = labelSekolah;
+      document.getElementById('repKelas').textContent = labelKelas;
+      document.getElementById('repMapel').textContent = labelMapel;
       document.getElementById('repInfoSoal').textContent = `40 Butir (25 PG, 10 Isian, 5 Uraian) / KKTP ${kkm}`;
 
-      // Hitung Statistik Deskriptif
-      const n = filtered.length;
-      const scores = filtered.map(s => Number(s.nilaiAkhir || 0));
+      // Update Kop Judul Utama & Subjudul Dinamis berdasarkan Filter yang Dipilih
+      const kopJudulEl = document.getElementById('kopJudulUtama');
+      const kopSubEl = document.getElementById('kopSubJudulFilter');
+      const bagianKop = [];
+      if (fSekolah !== 'ALL') bagianKop.push(fSekolah);
+      if (fKelas !== 'ALL') bagianKop.push(fKelas);
+      if (fMapel !== 'ALL') bagianKop.push(`MATA PELAJARAN ${fMapel}`);
 
-      let maxVal = 0, minVal = 0, meanVal = 0, stdDevVal = 0, tuntasCount = 0;
-      if (n > 0) {
-        maxVal = Math.max(...scores);
-        minVal = Math.min(...scores);
-        const sum = scores.reduce((a, b) => a + b, 0);
-        meanVal = sum / n;
-        const variance = scores.reduce((acc, val) => acc + Math.pow(val - meanVal, 2), 0) / n;
-        stdDevVal = Math.sqrt(variance);
-        tuntasCount = scores.filter(v => v >= kkm).length;
+      if (bagianKop.length > 0) {
+        kopJudulEl.textContent = `LAPORAN REKAPITULASI NILAI DAN ANALISIS BUTIR SOAL${fSekolah !== 'ALL' ? ' ' + fSekolah.toUpperCase() : ''}`;
+        kopSubEl.textContent = bagianKop.join(' • ');
+        kopSubEl.classList.remove('hidden');
+      } else {
+        kopJudulEl.textContent = 'LAPORAN REKAPITULASI NILAI DAN ANALISIS BUTIR SOAL';
+        kopSubEl.textContent = '';
+        kopSubEl.classList.add('hidden');
       }
 
+      // Hitung Statistik Nilai Kelas
+      const n = Array.isArray(filtered) ? filtered.length : 0;
+      const scores = filtered.map(s => Number(s.nilaiAkhir) || 0);
+      const maxVal = n > 0 ? Math.max(...scores) : 0;
+      const minVal = n > 0 ? Math.min(...scores) : 0;
+      const meanVal = n > 0 ? (scores.reduce((a, b) => a + b, 0) / n) : 0;
+      const variance = n > 0 ? (scores.reduce((acc, val) => acc + Math.pow(val - meanVal, 2), 0) / n) : 0;
+      const stdDevVal = Math.sqrt(variance);
+      const tuntasCount = scores.filter(sc => sc >= kkm).length;
       const belumCount = n - tuntasCount;
       const pctTuntas = n > 0 ? Math.round((tuntasCount / n) * 100) : 0;
       const pctBelum = n > 0 ? (100 - pctTuntas) : 0;
@@ -2039,8 +2056,12 @@
       const kkm = Number(document.getElementById('kkmInput').value || 75);
 
       // Sheet 1: Rekapitulasi Nilai Siswa
+      const judulExcel = fSekolah !== 'ALL'
+        ? `LAPORAN REKAPITULASI NILAI DAN ANALISIS BUTIR SOAL ${fSekolah.toUpperCase()}`
+        : 'LAPORAN REKAPITULASI NILAI DAN ANALISIS BUTIR SOAL';
+
       const rekapRows = [
-        ['LAPORAN REKAPITULASI NILAI DAN ANALISIS BUTIR SOAL'],
+        [judulExcel],
         ['Satuan Pendidikan', fSekolah === 'ALL' ? 'Semua Sekolah' : fSekolah],
         ['Kelas', fKelas === 'ALL' ? 'Semua Kelas' : fKelas],
         ['Mata Pelajaran', fMapel === 'ALL' ? 'Semua Mata Pelajaran' : fMapel],
